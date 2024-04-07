@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product</title>
+  <style>
+    /* Add your CSS styles here */
+    /* Example styles for form layout */
+    form {
+      width: 50%;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Product</h1>
+  <form action="/products/<%= product._id %>/edit" method="POST">
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" name="productName" value="<%= product.productName %>" required>
+
+    <label for="brand">Brand:</label>
+    <input type="text" id="brand" name="brand" value="<%= product.Brand %>" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+
+    <!-- Display current image -->
+    <label for="currentImage">Current Image:</label>
+    <img src="/<%= product.mainImage %>" alt="Current Image">
+    <br>
+    <label for="newImage">Upload New Image:</label>
+    <input type="file" id="newImage" name="newImage">
+    <br>
+
+    <label for="category">Category:</label>
+    <input type="text" id="category" name="category" value="<%= product.category %>" required>
+
+    <label for="regularPrice">Regular Price:</label>
+    <input type="number" id="regularPrice" name="regularPrice" value="<%= product.RegularPrice %>" step="0.01" required>
+
+    <label for="salePrice">Sale Price:</label>
+    <input type="number" id="salePrice" name="salePrice" value="<%= product.salePrice %>" step="0.01" required>
+
+    <label for="size">Size:</label>
+    <input type="text" id="size" name="size" value="<%= product.size %>" required>
+
+    <label for="stock">Stock:</label>
+    <input type="number" id="stock" name="stock" value="<%= product.stock %>" required>
+
+    <label for="productOffer">Product Offer (%):</label>
+    <input type="number" id="productOffer" name="productOffer" value="<%= product.productOffer %>" required>
+
+    <label for="isActive">Is Active:</label>
+    <input type="checkbox" id="isActive" name="isActive" <% if (product.is_active) { %> checked <% } %> >
+
+    <!-- You may include inputs for other fields such as relatedImages -->
+
+    <input type="submit" value="Update Product">
+</form>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products List</title>
+  <style>
+    .button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff; /* Change to your desired button color */
+  color: #fff; /* Text color */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded corners */
+  border: none; /* Remove border */
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3; /* Change to a darker shade on hover */
+}
+
+    /* Add your CSS styles for the table here */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Products List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Main Image	</th>
+        <th>Brand</th>
+        <th>Discription	</th>
+        <th>Category</th>
+        <th>Regular Pric	</th>
+        <th>Sale Price </th>
+        <th>Size</th>
+        <th>Stock</th>
+        <th>Product Offer</th>
+        <th>Is Active</th>
+        <th class="text-center">Actions </th> <!-- Add a new column for actions -->
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(product => { %>
+        <tr>
+          <td><%= product.productName %></td>
+          <td><img src="/<%= product.mainImage %>" alt="Main"></td>
+          <td><%= product.Brand %></td>
+          <td><%= product.description %></td>
+          <td><%= product.category ? product.category.name : 'N/A' %></td>
+          <td>$<%= product.RegularPrice.toFixed(2) %></td>
+          <td>$<%= product.salePrice.toFixed(2) %></td>
+          <td><%= product.size %></td>
+          <td><%= product.stock %></td>
+          <td><%= product.productOffer %>%</td>
+          <!-- <td><%= product.is_active ? 'Yes' : 'No' %></td> -->
+          
+          <td>
+            <p class="<%= product.is_active ? 'badge badge-pill badge-soft-success' : 'badge badge-pill badge-soft-danger' %>">
+                <%= product.is_active ? 'Yes' : 'No' %>
+            </p>
+        </td>
+
+          <td>
+            <!-- Add buttons for actions -->
+            <a href="/products/<%= product._id %>" class="button">Edit</a>
+            <a href="/toogle/<%= product._id %>" id="restrict"
+              title="<%= product.is_active ? 'Unpublish' : 'Publish' %>"
+              class="fw-bold text-warning button"
+              onclick="togglePublish('<%= product._id %>')">
+              <%= product.is_active ? 'Unpublish' : 'Publish' %>
+            </a>            
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+
+<script>
+  function togglePublish(productId){
+    fetch(`/toogle/${productId}`, {
+      method:'POST'
+    })
+    .then(response => {
+      if (response.ok) {
+        const button = document.querySelector('a[id="restrict"]');
+        const is_active = button.textContent = is_active ? 'Unpublish' : 'Publish';
+        // Add logic here to handle badge update if needed
+      } else {
+        console.error('Failed to toggle publish status');
+      }
+    })
+    .catch(error => {
+      console.log('Error toggling publish status:', error);
+    });
+  }
+</script>
+<!-- <script>
+  function togglePublish(productId){
+    fetch(`/products/${productId}/toggle-publish`, {
+      method:'Post'
+  })
+  .then(response=>{
+    if(response.ok){
+      const button=document.querySelector('button[data-product-id="${productId}"]')
+      const isPublished=button.textContent=isPublished?'Unpublished':'Published'
+
+// badge
+const badge=document.querySelector('.badge[data-product-id="${productId}"]')
+badge.textContent=isPublished?'Inactive':'Active'
+badge.classList.toggle('badge-soft-success', !isPublished);
+ badge.classList.toggle('badge-soft-danger', isPublished);
+}else{
+  console.error('Failed to toggle publish status');
+}
+})
+.catch(error=>{
+  console.log('Erro togling publish status:',error);
+})
+}
+</script> -->
+
+</html>
