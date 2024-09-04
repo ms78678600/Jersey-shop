@@ -1,89 +1,77 @@
-//loging controller
-const User=require('../model/userSchema')
-const bcrypt=require('bcrypt')
+const User = require('../model/userSchema');
+const Product = require('../model/productModel');
+const bcrypt = require('bcrypt');
 
-const loginController={}
+const loginController = {};
 
-
-// landing page showing
-loginController.displayLandingPage=async(req,res)=>{
+// Landing page showing
+loginController.displayLandingPage = async (req, res) => {
   try {
-    if(!req.session.userActive){
-      res.render('landing')
-    }else{
-      res.redirect('/home')
+    if (!req.session.userActive) {
+      const products = await Product.find();
+      res.render('user/landing', { products });
+    } else {
+      res.redirect('user/home');
     }
-    
   } catch (error) {
-    res.render('error')
-    console.log("error occured",error)
+    res.render('error');
+    console.error("Error occurred:", error);
   }
- }
+};
 
-// display login page
-loginController.displayLogin=async(req,res)=>{
-  if(!req.session.userActive){
-    res.render('login')
-  }else{
-    redirect("/signUp")
+// Display login page
+loginController.displayLogin = async (req, res) => {
+  if (!req.session.userActive) {
+    res.render('user/login');
+  } else {
+    res.redirect("/signUp");
   }
-}
- 
+};
 
-
-
-// manageLogin
+// Manage login
 loginController.manageLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const customer = await User.findOne({ email });
-    
+
     if (!customer) {
-      return res.json({ status: 'error', message: "No user found. Please sign up" });
+      return res.json({
+        success: false,
+        errors: { email: "No user found. Please sign up" }
+      });
     }
-    
-    try {
-      const comparePassword = await bcrypt.compare(password, customer.password);
-      
-      if (!comparePassword) {
-        return res.json({ status: 'error', message: "Password is wrong" });
-      }
 
-      // If password comparison is successful, you might want to proceed with generating a JWT or some other form of authentication.
-
-      customer.lastLogin = new Date(); // Updating last login timestamp
-      console.log(customer.lastLogin);
-      await customer.save();
-      res.render("home")
-
-    } catch (error) {
-      console.log("Password compare error:", error);
-      return res.json({ status: 'error', message: "An error occurred. Please try again" });
+    if (customer.isBlocked) {
+      return res.json({
+        success: false,
+        errors: { email: "Your account has been blocked. Please contact admin" }
+      });
     }
+
+    const comparePassword = await bcrypt.compare(password, customer.password);
+    if (!comparePassword) {
+      return res.json({
+        success: false,
+        errors: { password: "Password is wrong" }
+      });
+    }
+
+    // If password comparison is successful, proceed with authentication.
+    customer.lastLogin = new Date(); // Updating last login timestamp
+    await customer.save();
+
+    req.session.userActive = true;
+    req.session.user_id = customer._id;
+
+
+    return res.json({ success: true, message: "Login successful" });
   } catch (error) {
-    console.log("Error in login:", error);
-    return res.json({ status: 'error', message: "An error occurred. Please try again" });
-  }
-};
-
-// userlogout
-loginController.logout = async (req, res) => {
-  try {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Error destroying session:', err);
-        return res.status(500).json({ status: 'error', message: 'An error occurred during logout' });
-      }
-      res.redirect('/login'); // Redirect to login page after logout
+    console.error("Error in login:", error);
+    return res.json({
+      success: false,
+      errors: { general: "An error occurred. Please try again" }
     });
-  } catch (error) {
-    console.error('Error during logout:', error);
-    res.status(500).json({ status: 'error', message: 'An error occurred during logout' });
   }
 };
 
-
-
-
-
-module.exports=loginController
+module.exports = loginController;

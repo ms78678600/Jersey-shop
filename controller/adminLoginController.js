@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
+const productModel = require('../model/productModel');
 const adminLoginController = {};
 
 const adminEmail = "admin@gmail.com";
-const adminPassword = "admin1234";
+const adminPassword = "123456";
 const secretKey = "your_secret_key"; // Change this to a strong, unique secret key
 
 adminLoginController.renderLoginForm = (req, res) => {
-  res.render('adminlog');
+  res.render('admin/adminlog');
 };
 
 adminLoginController.login = async (req, res) => {
@@ -14,7 +15,7 @@ adminLoginController.login = async (req, res) => {
 
   try {
     if (email !== adminEmail || password !== adminPassword) {
-      return res.render('adminlog', { err: true, message: 'Invalid email or password' });
+      return res.render('admin/adminlog');
     }
 
     // If email and password are correct, create a JWT token with an expiration time of 1 hour
@@ -23,7 +24,7 @@ adminLoginController.login = async (req, res) => {
     req.session.adminToken = token;
 
     // Redirect to the dashboard page
-    res.redirect('/adminDashboard');
+    res.redirect('/admin/adminDashboard');
   
   } catch (error) {
     console.error(error);
@@ -32,6 +33,15 @@ adminLoginController.login = async (req, res) => {
 
 };
 
+adminLoginController.addProductPage = async(req,res)=>{
+
+  const products=await productModel.find()
+
+    return res.render('admin/Addprd',{products});
+  }
+
+
+
 adminLoginController.dashbordRedirect = async (req, res) => {
   // Check if the user is logged in as admin
   if (!req.session.adminLogin) {
@@ -39,7 +49,7 @@ adminLoginController.dashbordRedirect = async (req, res) => {
     return res.redirect('/adminLogin');
   }
 
-  res.render('adminDashboard');
+  res.render('Admin/adminDashboard');
 }
 
 
@@ -50,7 +60,7 @@ adminLoginController.logout = (req, res) => {
       console.error(err);
       return res.status(500).send('Error during logout');
     }
-    res.redirect('/adminLogin'); // Redirect to admin login page after logout
+    res.redirect('/admin/adminLogin'); // Redirect to admin login page after logout
   });
 };
 

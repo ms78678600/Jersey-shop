@@ -6,7 +6,7 @@ const productController = {};
 
 // Controller function for adding a new product
 productController.addProduct = async (req, res) => {
-  console.log("im addpro",req.body)
+  ("im addpro",req.body)
   try {
     const {
       productName,

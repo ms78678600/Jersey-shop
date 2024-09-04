@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const category=require('../model/categoryModel')
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
@@ -7,54 +6,78 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
-  Brand: {
-    type: String,
-    required: true
+  popularity: {
+    type: Number,
+    default: 0
   },
+  averageRating: {
+    type: Number,
+    default: 0
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  // brand: {
+  //   type: String,
+  //   required: true
+  // },
   description: {
     type: String,
     required: true
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"Category"
+    ref: "Category"
   },
-  RegularPrice: {
+  regularPrice: {
     type: Number,
     required: true
   },
-  salePrice: {
+  salesPrice: {
     type: Number,
     required: true,
   },
-  size: {
-    type: String,
-    required: true
-  },
+  // size: {
+  //   type: String,
+  //   required: true
+  // },
   createdOn: {
     type: Date,
-    required: true
+    required: true,
+    default: Date.now
   },
-  stock: {
-    type: Number,
-    required: true
-  },
-  productOffer: {
-    type: Number,
-    required: true
-  },
+  // stock: {
+  //   type: Number,
+  //   required: true
+  // },
   is_active: {
     type: Boolean,
+    required: true,
+    default: true
+  },
+  quantity: {
+    type: Number,
     required: true
   },
-  mainImage: {
-    type: String,
-    required: true
-  },
-  relatedImages: {
-    type: Array, // Array of strings for related images
-    required: true
-  }
+  images: [
+    {
+      filename: {
+        type: String,
+        required: true
+      }
+    }
+  ]
+});
+
+productSchema.pre('validate', function(next) {
+  console.log("Validating product:", this);
+  next();
 });
 
 module.exports = mongoose.model("Product", productSchema);
+
+
+
+
+

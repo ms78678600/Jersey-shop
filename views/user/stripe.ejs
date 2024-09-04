@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stripe Payment Demo</title>
+</head>
+<body>
+  <h3>Welcome to Payment Gateway</h3>
+  <form action="/payment" method="POST">
+    <script
+      src="https://checkout.stripe.com/v2/checkout.js"
+      class="stripe-button"
+      data-key="<%= process.env.PUBLISHABLE %>" 
+      data-amount="2500" 
+      data-currency="inr"
+      data-name="Crafty Gourav"
+      data-description="Handmade Art and Craft Products"
+      data-locale="auto">
+    </script>
+  </form>
+</body>
+</html>

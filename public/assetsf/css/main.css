@@ -388,7 +388,7 @@ input[type=number]:focus,
 }
 
 .border {
-  border: 1px solid #e2e9e1 !important;
+  border: 0px solid #e2e9e1 !important;
 }
 
 .box-shadow-outer-6 {

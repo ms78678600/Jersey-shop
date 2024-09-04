@@ -237,6 +237,7 @@ input:focus::-moz-placeholder {
     height: 100vh !important
 }
 
+
 *:focus,
 select:focus,
 .custom-select:focus,

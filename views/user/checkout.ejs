@@ -1,0 +1,594 @@
+<%- include('../layout/user/header.ejs') %>
+
+    <body>
+        <style>
+            .small-radio {
+                width: 18px;
+                height: 18px;
+                margin-left: auto;
+            }
+        </style>
+
+        <div class="mobile-header-active mobile-header-wrapper-style">
+            <div class="mobile-header-wrapper-inner">
+                <div class="mobile-header-top">
+                    <div class="mobile-header-logo">
+                        <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                    </div>
+                    <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                        <button class="close-style search-close">
+                            <i class="icon-top"></i>
+                            <i class="icon-bottom"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mobile-header-content-area">
+                    <div class="mobile-search search-style-3 mobile-header-border">
+                        <form action="#">
+                            <input type="text" placeholder="Search for items…">
+                            <button type="submit"><i class="fi-rs-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="mobile-menu-wrap mobile-header-border">
+                        <div class="main-categori-wrap mobile-header-border">
+                            <a class="categori-button-active-2" href="#">
+                                <span class="fi-rs-apps"></span> Browse Categories
+                            </a>
+                            <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                                <ul>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's
+                                            Clothing</a></li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's
+                                            Clothing</a></li>
+                                    <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i>
+                                            Cellphones</a></li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
+                                            Office</a></li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
+                                            Electronics</a></li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a>
+                                    </li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a>
+                                    </li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
+                                            Kids</a></li>
+                                    <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- mobile menu start -->
+                        <nav>
+                            <ul class="mobile-menu">
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                        href="index.html">Home</a>
+                                    <ul class="dropdown">
+                                        <li><a href="index.html">Home 1</a></li>
+                                        <li><a href="index-2.html">Home 2</a></li>
+                                        <li><a href="index-3.html">Home 3</a></li>
+                                        <li><a href="index-4.html">Home 4</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                        href="shop-grid-right.html">shop</a>
+                                    <ul class="dropdown">
+                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                        <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                        <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                        <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                        <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                                href="#">Single Product</a>
+                                            <ul class="dropdown">
+                                                <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                                <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                                <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                        <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                        <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                        <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                        <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
+                                        menu</a>
+                                    <ul class="dropdown">
+                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                                href="#">Women's Fashion</a>
+                                            <ul class="dropdown">
+                                                <li><a href="shop-product-right.html">Dresses</a></li>
+                                                <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                                <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                                <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                                href="#">Men's Fashion</a>
+                                            <ul class="dropdown">
+                                                <li><a href="shop-product-right.html">Jackets</a></li>
+                                                <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                                <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                                href="#">Technology</a>
+                                            <ul class="dropdown">
+                                                <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                                <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                                <li><a href="shop-product-right.html">Tablets</a></li>
+                                                <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                                <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                        href="blog-category-fullwidth.html">Blog</a>
+                                    <ul class="dropdown">
+                                        <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                        <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                        <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                        <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                        <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                                href="#">Single Product Layout</a>
+                                            <ul class="dropdown">
+                                                <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                                <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                                <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                        href="#">Pages</a>
+                                    <ul class="dropdown">
+                                        <li><a href="page-about.html">About Us</a></li>
+                                        <li><a href="page-contact.html">Contact</a></li>
+                                        <li><a href="page-account.html">My Account</a></li>
+                                        <li><a href="page-login-register.html">login/register</a></li>
+                                        <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                        <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                        <li><a href="page-terms.html">Terms of Service</a></li>
+                                        <li><a href="page-404.html">404 Page</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                        href="#">Language</a>
+                                    <ul class="dropdown">
+                                        <li><a href="#">English</a></li>
+                                        <li><a href="#">French</a></li>
+                                        <li><a href="#">German</a></li>
+                                        <li><a href="#">Spanish</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- mobile menu end -->
+                    </div>
+                    <div class="mobile-header-info-wrap mobile-header-border">
+                        <div class="single-mobile-header-info mt-30">
+                            <a href="page-contact.html"> Our location </a>
+                        </div>
+                        <div class="single-mobile-header-info">
+                            <a href="page-login-register.html">Log In / Sign Up </a>
+                        </div>
+                        <div class="single-mobile-header-info">
+                            <a href="#">(+01) - 2345 - 6789 </a>
+                        </div>
+                    </div>
+                    <div class="mobile-social-icon">
+                        <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                        <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                        <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                        <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                        <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                        <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <main class="main">
+            <div class="page-header breadcrumb-wrap">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <a href="index.html" rel="nofollow">Home</a>
+                        <span></span> Shop
+                        <span></span> Checkout
+                    </div>
+                </div>
+            </div>
+            <section class="mt-50 mb-50">
+                <form id="orderFormData">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 order-lg-2">
+                                <div class="tab-pane fade show active" id="address" role="tabpanel"
+                                    aria-labelledby="address-tab">
+                                    <div class="row">
+
+                                        <% addresses.forEach(function(address) { %>
+                                            <div class="col-lg-12">
+                                                <div class="card mb-3">
+                                                    <div
+                                                        class="card-header d-flex justify-content-between align-items-center">
+                                                        <h5 class="mb-0">
+                                                            <%= address.isBilling ? "Billing Address"
+                                                                : "Shipping Address" %>
+                                                        </h5>
+                                                        <input type="radio" id="address_<%= address._id %>"
+                                                            name="address" value="<%= address._id %>"
+                                                            class="form-check-input small-radio">
+                                                        <h6> Select Address</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <address>
+                                                            <h6>First Name: <%= address.firstName %>
+                                                            </h6>
+                                                            <h6>Last Name: <%= address.lastName %>
+                                                            </h6>
+                                                            <h6>City: <%= address.city %>
+                                                            </h6>
+                                                            <h6>Street Address: <%= address.streetAddress %>
+                                                            </h6>
+                                                            <h6>State: <%= address.state %>
+                                                            </h6>
+                                                            <h6>Zipcode: <%= address.zipcode %>
+                                                            </h6>
+                                                            <h6>Phone: <%= address.phone %>
+                                                            </h6>
+                                                            <h6>Email: <%= address.email %>
+                                                            </h6>
+                                                        </address>
+                                                        <a href=/editAddress/<%=address._id %>
+                                                            class="btn-small">Edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                                <!-- <div class="payment-options">
+                                            <input type="radio" id="cod" name="paymentMethod" value="CashOnDelivery"> Cash On Delivery
+                                            <input type="radio" id="checkPayment" name="paymentMethod" value="Razorpay"> Razorpay
+                                            <input type="radio" id="wallet" name="paymentMethod" value="Wallet"> Wallet
+                                        </div> -->
+
+
+                                    </div>
+
+
+                                    <div class="col-md-12 text-center">
+                                        <a href="/add-address/<%= user_id %>" class="btn btn-fill-out submit">Add
+                                            Address</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="panel-collapse collapse coupon_form " id="coupon">
+                                    <div class="panel-body">
+                                        <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <input type="text" placeholder="Enter Coupon Code...">
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn  btn-md" name="login">Apply Coupon</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex">
+                            <!-- Order Review Section on the Left -->
+                            <div class="col-lg-6 order-lg-1">
+                                <div class="order_review">
+                                    <div class="mb-20">
+                                        <h4>Your Orders</h4>
+                                    </div>
+                                    <div class="table-responsive order_table text-center">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% cart.forEach(cartItem=> { %>
+                                                    <% const product=productsMap[cartItem.product_id]; %>
+                                                        <% if (product) { %>
+                                                            <tr>
+                                                                <td class="image product-thumbnail">
+                                                                    <img src="/uploads/<%= product.images[0]?.filename %>"
+                                                                        alt="<%= product.productName %>" width="70">
+                                                                </td>
+                                                                <td>
+                                                                    <h5><a href="/product/<%= product._id %>">
+                                                                            <%= product.productName %>
+                                                                        </a></h5>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="product-qty">x <%= cartItem.quantity %>
+                                                                    </span>
+                                                                </td>
+                                                                <td>$<%= (product.salesPrice *
+                                                                        cartItem.quantity).toFixed(2) %>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                                                <% }); %>
+
+                                                                    <!-- SubTotal -->
+                                                                    <tr>
+                                                                        <th>SubTotal</th>
+                                                                        <td colspan="3" id="total"
+                                                                            class="font-lg fw-900 text-brand product-subtotal">
+                                                                            $<%= cartTotal.toFixed(2) %>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <!-- Shipping (Assume 5% charge) -->
+                                                                    <tr>
+                                                                        <th>Shipping</th>
+                                                                        <td colspan="3"><em
+                                                                                class="font-lg fw-900 text-brand">0</em>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <!-- Total -->
+                                                                    <tr>
+                                                                        <th>Total</th>
+                                                                        <td colspan="3" class="product-subtotal">
+                                                                            <span class="font-xl text-brand fw-900">$<%=
+                                                                                    cartTotal.toFixed(2) %>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                    <div class="payment_method">
+                                        <div class="mb-25">
+                                            <h5>Payment</h5>
+                                        </div>
+                                        <div class="payment_option">
+                                            <div class="custome-radio">
+                                                <input class="form-check-input" type="radio" name="payment_option"
+                                                    id="checkPayment" value="Razorpay">
+
+                                                <label class="form-check-label" for="checkPayment">Razorpay</label>
+                                            </div>
+                                            <div class="payment_option">
+                                                <div class="custome-radio">
+                                                    <input class="form-check-input" required="" type="radio"
+                                                        name="payment_option" id="cod" value="Cash on Delivery" checked>
+                                                    <label class="form-check-label" for="cod">Cash On Delivery</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Payment Option: Check Payment -->
+                                        <div class="custome-radio">
+                                            <input class="form-check-input" type="radio" name="payment_option"
+                                                id="wallet" value="Wallet">
+                                            <label class="form-check-label" for="wallet">Wallet</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Payment Option: PayPal -->
+                                    <div class="custome-radio">
+                                        <!-- <input class="form-check-input" type="radio" name="payment_option" id="paypal" value="Paypal">
+                                    <label class="form-check-label" for="paypal" data-bs-toggle="collapse" data-target="#paypalCollapse"
+                                      aria-controls="paypalCollapse">Paypal</label> -->
+                                        <div class="form-group collapse" id="paypalCollapse">
+                                            <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card
+                                                if you don’t have a PayPal account.</p>
+                                        </div>
+                                        <a id="checkout" class="btn btn-fill-out btn-block mt-30"
+                                            onclick="checkout('<%= addresses.length %>',' <%= cart.length %>')">Place
+                                            Order</a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Address Section on the Right -->
+
+                    </div>
+
+                    </div>
+
+                    </div>
+            </section>
+        </main>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> -->
+
+
+        <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+
+        <script>
+
+            function extractNumericValue(str) {
+                const numericString = str.replace(/[^0-9.]+/g, "");  // Remove commas and currency symbols
+                return parseFloat(numericString);
+            }
+            function checkout(addressLength, cartLength) {
+                const hasAddress = addressLength > 0;
+                const hasCart = cartLength > 0;
+
+                const razorpayOption = document.getElementById("checkPayment");
+                const codOption = document.getElementById("cod");
+                const walletOption = document.getElementById("wallet");
+
+                if (!hasCart) {
+                    invalidCart();
+                } else if (!hasAddress) {
+                    invalidAddress();
+                } else {
+                    const paymentMethod = razorpayOption.checked ? "Razorpay" :
+                        codOption.checked ? "CashOnDelivery" :
+                            walletOption.checked ? "Wallet" : "";
+
+                    if (!paymentMethod) {
+                        alert("Please select a payment method.");
+                        return;
+                    }
+
+                    if (paymentMethod === "Razorpay") {
+                        sendRazorpayRequest();
+                    } else if (paymentMethod === "CashOnDelivery") {
+                        sendCashOnDeliveryRequest();
+                    } else if (paymentMethod === "Wallet") {
+                        sendWalletRequest();
+                    }
+                }
+
+                function sendRazorpayRequest() {
+                    const formData = new FormData(document.getElementById("orderFormData"));
+                    console.log(formData)
+                    const totalPrice = document.getElementById("total").innerText;
+                    const total = extractNumericValue(totalPrice);
+                    console.log(total)
+
+                    const requestData = {
+                        paymentMethod: "Razorpay",
+                        formData: Object.fromEntries(formData),
+                        totalPrice: total
+                    };
+
+                    $.ajax({
+                        url: "/checkout/razor-pay",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(requestData),
+                        success: function (res) {
+                            if (res.success) {
+                                initiateRazorpayPayment(res);
+                            } else {
+                                alert("Error creating Razorpay order");
+                            }
+                        },
+                        error: function (error) {
+                            alert("Ajax error: " + error.responseText || "Unknown error");
+                        },
+                    });
+                }
+
+                function initiateRazorpayPayment(orderDetails) {
+                    const options = {
+                        key: orderDetails.key_id,
+                        amount: orderDetails.amount,
+                        currency: orderDetails.currency,  // Added currency here
+                        order_id: orderDetails.order_id,
+                        handler: function (response) {
+                            // toastr.success("Payment completed successfully.");
+                            sendCompleteRequest(response, orderDetails.formData);
+                        },
+                        prefill: {
+                            contact: orderDetails.contact,
+                            name: orderDetails.name,
+                            email: orderDetails.email,
+                        },
+                    };
+
+                    const rzp1 = new Razorpay(options);
+                    rzp1.on("payment.failed", function (response) {
+                        alert("Razorpay payment failed: " + response.error.description);  // Show detailed error
+                    });
+                    rzp1.open();
+                }
+
+
+
+                function sendCashOnDeliveryRequest() {
+                    const formData = new FormData(document.getElementById("orderFormData"));
+                    console.log(formData)
+                    const totalPrice = document.getElementById("total").innerText;
+                    const total = extractNumericValue(totalPrice);
+
+                    const requestData = {
+                        paymentMethod: "CashOnDelivery",
+                        formData: Object.fromEntries(formData),
+                        totalPrice: total,
+                    };
+
+                    $.ajax({
+                        url: "/checkout/cash-on-delivery",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(requestData),
+                        success: function (data) {
+                            if (data.success) {
+                                window.location.href = "/success-page";
+                            } else {
+                                alert("Error processing Cash On Delivery request");
+                            }
+                        },
+                        error: function (error) {
+                            alert("Ajax error: " + error.responseText || "Unknown error");
+                        },
+                    });
+                }
+
+                function invalidCart() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Cart is empty!",
+                    });
+                }
+
+                function invalidAddress() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Add one address!",
+                    });
+                }
+            }
+            function sendCompleteRequest(response, formData) {
+                // const couponCodeElement = document.getElementById("couponMessage");
+                // const couponCode = couponCodeElement.innerText.split(" ")[0];
+
+                const totalPrice = document.getElementById("total").innerText;
+                const total = extractNumericValue(totalPrice);
+
+                const requestData = {
+                    paymentMethod: "Razor Pay",
+                    formData: formData,
+                    // couponCode,
+                    totalPrice: total,
+                };
+
+                // Make an AJAX request to the server for "/checkout/razor-pay/completed"
+                $.ajax({
+                    url: "/checkout/razor-pay/completed",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(requestData),
+                    success: function (data) {
+                        // Handle success if needed
+                        window.location.href = "/success-page";
+                    },
+                    error: function (error) {
+                        // Handle the error if needed
+                        console.error("Completed route request error:", error);
+                    },
+                });
+            }
+
+        </script>
+
+
+
+        <%- include('../layout/user/footer.ejs') %>

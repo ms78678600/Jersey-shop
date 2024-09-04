@@ -1,6 +1,4 @@
-// categoryModel.js
 const mongoose = require('mongoose');
-const product=require('../model/productModel')
 
 const categorySchema = new mongoose.Schema({
   name: {
@@ -8,15 +6,15 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  description: {
-    type: String
+
+  listed: {
+    type: Boolean,
+    default: true,
   },
-products:[
-  {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Product"
+  createdOn:{
+    type:Date,
+    default:Date.now
   }
-]
 });
 
 module.exports = mongoose.model('Category', categorySchema);

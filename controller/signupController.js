@@ -1,10 +1,10 @@
 const User = require('../model/userSchema');
 const otpgenerator = require('generate-otp');
-const jwt=require('jsonwebtoken')
-const bcrypt=require('bcrypt')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
-const singnupCo = {};
+const signupController = {};
 
 // Mail function to send OTP
 async function mail(email, otp) {
@@ -27,7 +27,6 @@ async function mail(email, otp) {
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(info);
   } catch (error) {
     console.error("Error occurred while sending email:", error);
     throw error;
@@ -35,12 +34,10 @@ async function mail(email, otp) {
 }
 
 // Manage Signup Logic
-singnupCo.manageSignup = async (req, res) => {
+signupController.manageSignup = async (req, res) => {
   try {
-    console.log("req",req.body)
     const { name, email, phonenumber, password, confirmpassword } = req.body;
 
-    console.log("Emaillll",req.body.email)
     if (!email) {
       return res.status(400).json({ status: 'error', message: 'Email is required' });
     }
@@ -60,7 +57,7 @@ singnupCo.manageSignup = async (req, res) => {
     // Send OTP via email
     await mail(email, otp);
 
-    req.session.data = {
+    req.session.tempUserData = {
       name,
       email,
       phonenumber,
@@ -79,111 +76,93 @@ singnupCo.manageSignup = async (req, res) => {
 };
 
 // Display Signup Page
-singnupCo.displaySingnup = (req, res) => {
+signupController.displaySingnup = (req, res) => {
   try {
     if (!req.session.userActive) {
-      res.render('signUp');
+    return  res.render('user/signUp');
     } else {
-      res.render('/home');
+     return res.render('user/home');
     }
   } catch (error) {
     console.error("Error occurred while rendering sign up page:", error);
-    res.render('error');
+   return res.render('error');
   }
 };
 
-// Show OTP Page
-singnupCo.showOtp = (req, res) => {
+// Resent OTP
+signupController.resentOtp = async (req, res) => {
+  try {
+    if (req.session.tempUserData) {
+      const otp = otpgenerator.generate(6, { digits: true, alphabets: false, specialChars: false });
+      req.session.tempUserData.otp = otp;
+
+      // Send OTP via email
+      await mail(req.session.tempUserData.email, otp);
+
+      return res.json({ status: 'success', message: 'OTP resent successfully' });
+    } else {
+      return res.status(400).json({ status: 'error', message: 'No user data found. Please sign up again' });
+    }
+  } catch (error) {
+    console.error("Error occurred while resending OTP:", error);
+    return res.status(500).json({ status: 'error', message: 'An error occurred. Please try again' });
+  }
+};
+
+// Show OTP Verification Page
+signupController.showOtp = (req, res) => {
   try {
     if (req.session.isSignup) {
-      res.render('verification');
+      return res.render('user/verification');
     } else {
-      res.redirect('/signUp');
+     return  res.redirect('/signUp');
     }
   } catch (error) {
-    console.error("Error occurred while rendering OTP page:", error);
-    res.render('error');
+    console.error("Error occurred while rendering OTP verification page:", error);
+   return res.render('error');
   }
 };
 
-// manageOtp
-singnupCo.manageOtp = async (req, res) => {
+// Manage OTP Verification
+signupController.manageOtp = async (req, res) => {
   try {
-    console.log("hello aslah");
-    const enteredOtp = req.body.otp;
-    console.log(enteredOtp);
-    const userData = req.session.data;
-    console.log(req.session.data);
-    const { otp, expireOtp, timestamp } = userData;
+    const { otp } = req.body;
+    const tempUserData = req.session.tempUserData;
 
-    const isExpired = Date.now() - timestamp > expireOtp;
-    if (isExpired) {
-      return res.json({ status: 'error', message: 'OTP expired' });
+    if (!tempUserData) {
+      return res.status(400).json({ status: 'error', message: 'Session expired. Please sign up again' });
     }
-    if (enteredOtp === otp) {
-      console.log("otp match");
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
 
-      const newUser = new User({
-        name: userData.name,
-        email: userData.email,
-        phonenumber: userData.phonenumber,
-        password: hashedPassword
-      });
-
-      // Store user data
-      try {
-        const storeUser = await newUser.save();
-
-        // Set session variable
-        req.session.userActive = true;
-
-        // Clear session data
-        delete req.session.data;
-        delete req.session.isSignup;
-
-        // Generate a JWT
-        const token = jwt.sign({ userId: storeUser._id }, "secretKey", { expiresIn: '24h' });
-        res.cookie('token', token, { httpOnly: true, secure: false });
-        
-        // Redirect user to home page after successful signup
-        res.redirect('home');
-      } catch (error) {
-        console.log("Error occurred while saving user data:", error.message);
-        res.json({ status: 'error', message: 'An error occurred while saving user data' });
-      }
-    } else {
-      res.json({ status: 'error', message: 'OTP does not match, please enter correct OTP' });
+    const currentTime = Date.now();
+    if (currentTime - tempUserData.timestamp > tempUserData.expireOtp) {
+      return res.status(400).json({ status: 'error', message: 'OTP expired. Please sign up again' });
     }
+
+    if (otp !== tempUserData.otp) {
+      return res.status(400).json({ status: 'error', message: 'Invalid OTP. Please try again' });
+    }
+
+    const hashedPassword = await bcrypt.hash(tempUserData.password, 10);
+
+    const newUser = new User({
+      name: tempUserData.name,
+      email: tempUserData.email,
+      phonenumber: tempUserData.phonenumber,
+      password: hashedPassword
+    });
+
+    await newUser.save();
+
+    req.session.isSignup = false;
+    req.session.tempUserData = null;
+    req.session.userActive = true;
+    req.session.user_id = newUser._id;
+
+    return res.render('user/home')
   } catch (error) {
-    console.error("Error occurred while managing OTP:", error);
-    res.render('error');
+    console.error("Error occurred while verifying OTP:", error);
+    return res.status(500).json({ status: 'error', message: 'An error occurred. Please try again' });
   }
-}
+};
 
-
-// //resent otp
-singnupCo.resentOtp=async(req,res)=>{
-  try{
-    const data=req.session.data
-    const email=data.email
-
-    // generate otp
-
-    const otpln=6
-    const otpNew=otpgenerator.generate(otpln,{digits:true,lowerCaseAlphabets:false,upperCaseAlphabets:false,specialChars:false})
-    const expireOtpNew=5*60*1000
-    
-    // store data in session tempororly
-    req.session.data.otp=otpNew
-    req.session.data.expireOtp=expireOtpNew
-    req.session.data.timestamp=Date.now()
-    await mail(email,otpNew)
-    res.redirect('/otp-verification')
-  }catch(erorr){
-    res.render('error')
-  }console.log("Error occured in resend otp",erorr.message);
-}
-
-module.exports = singnupCo;
+module.exports = signupController;
