@@ -6253,12 +6253,8 @@ fieldset:disabled .btn {
 }
 
 .modal.fade .modal-dialog {
-  -webkit-transition: -webkit-transform 0.3s ease-out;
-  transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
-  -webkit-transform: translate(0, -50px);
-          transform: translate(0, -50px);
+  transform: translate(0, -50px); 
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6269,8 +6265,7 @@ fieldset:disabled .btn {
 }
 
 .modal.show .modal-dialog {
-  -webkit-transform: none;
-          transform: none;
+   transform: translate(0, 0);
 }
 
 .modal.modal-static .modal-dialog {

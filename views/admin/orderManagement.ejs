@@ -49,9 +49,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% order.forEach(order => { %>
+                            <% orders.forEach(order => { %>
                                 <tr>
-                                    <td><a href="#" class="fw-bold">#<%= order._id %></a></td>
+                                    <td><a href="#" class="fw-bold">#<%= order.orderNumber %></td>
                                     <td><%= order.user.name %></td>
                                     <td><%= order.date %></td>
                                     <td><%= order.totalPrice %></td>  
@@ -83,11 +83,39 @@
             </div> <!-- table-responsive end// -->
         </div>
     </div> <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-start">
-          </ul>
-        </nav>
-      </div>
+
+  <!-- Existing content -->
+  
+  <div class="pagination-area mt-15 mb-50">
+    
+      <ul class="pagination justify-content-start">
+        <% if (currentPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        <% } %>
+
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+
+  
 </section>
+
+
 <%- include('../layout/admin/header.ejs') %>

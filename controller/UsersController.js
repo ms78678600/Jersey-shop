@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Address=require('../model/addressSchema')
 const User = require('../model/userSchema'); // Ensure the correct path to your User model
-const Product = require('../model/productModel');
 const orderModel = require('../model/orderScheema');
 const signupController = require('../controller/signupController');
+const Category=require('../model/categoryModel')
 const bcrypt=require('bcrypt')
+const Wallet=require('../model/walletScheema')
 const mail = signupController.mail
 const otp=signupController.otp
 
@@ -128,14 +129,23 @@ console.log(req.session.tempUserData);
 // Finding users in the database
 const findUsers = async (req, res) => {
   try {
-    const users = await User.find({});
-    console.log(users);
-    res.render('admin/UsersManagement', { users });
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    const limit = 4; // Number of users per page
+
+    const users = await User.find({})
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    res.render('admin/UsersManagement', { users, totalPages, currentPage: page });
   } catch (error) {
     console.log('Error in fetching users', error);
     res.status(500).send('Server Error');
   }
 };
+
 
 // User block/unblock management
 const userToggleManage = async (req, res) => {
@@ -244,24 +254,49 @@ const resetPassword = async (req, res) => {
 };
 
 
-
-
 const searchProduct = async (req, res) => {
   try {
-    const searchTerm = req.query.q || ''; // Get the search query from the URL
-    const regex = new RegExp(searchTerm, 'i'); // Create a case-insensitive regex pattern
+    const searchTerm = req.query.q || ''; // Search term from the query
+    const categoryFilter = req.query.category || ''; // Selected category from the query
+    const regex = new RegExp(searchTerm, 'i'); // Create a case-insensitive regex pattern for search
 
-    const products = await productModel.find({
-      productName: regex,
+    let filter = {
       is_active: true
-    }).populate('category');
+    };
 
-    res.render('user/searchResults', { product: products, searchProduct: searchTerm });
+    if (categoryFilter) {
+      // Filter by the selected category if one is specified
+      filter.category = categoryFilter;
+    } else {
+      // Search for categories that match the search term
+      const matchedCategories = await Category.find({ name: regex });
+      const categoryIds = matchedCategories.map(cat => cat._id);
+
+      // Include products where the name or category matches the search term
+      filter.$or = [
+        { productName: regex },
+        { category: { $in: categoryIds } }
+      ];
+    }
+
+    const categories = await Category.find(); // Fetch all categories
+
+    const products = await productModel.find(filter).populate('category'); // Fetch filtered products
+
+    // Render the search results and pass the necessary data
+    res.render('user/searchResults', {
+      product: products,
+      searchProduct: searchTerm,
+      categories, // Pass the categories for the dropdown
+      selectedCategory: categoryFilter // Pass the selected category
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send('Server Error');
   }
 };
+
+
 
 
 const logout=async(req,res)=>{
@@ -279,21 +314,61 @@ const logout=async(req,res)=>{
 
 
 
-  const myAccount = async (req, res) => {
-    try {
-      const user_id = req.session.user_id
-      
-      const users = await User.findById(user_id);
-      const addressData=await Address.find({user_id:user_id}); // Get a single user
-      const orderDetails = await orderModel.find({ user : user_id }).populate("products.productId")
-      
-      res.render('user/myAccount',  { users, addresses: addressData, orders:orderDetails });; // Pass the single user object
-    
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Server Error');
-    }
-  };
+const myAccount = async (req, res) => {
+  try {
+    const user_id = req.session.user_id;
+    const wallet = await Wallet.findOne({ userId: user_id });
+    const users = await User.findById(user_id);
+    const addressData = await Address.find({ user_id: user_id });
+
+    // Pagination for Orders
+    const orderPage = parseInt(req.query.orderPage) || 1; // Orders page number
+    const orderLimit = 8; // Orders per page
+    const orderSkip = (orderPage - 1) * orderLimit;
+
+    const totalOrders = await orderModel.countDocuments({ user: user_id }); // Count total orders for the user
+    const totalOrderPages = Math.ceil(totalOrders / orderLimit);
+
+    const orderDetails = await orderModel
+      .find({ user: user_id })
+      .populate("products.productId")
+      .skip(orderSkip)
+      .limit(orderLimit);
+
+    // Wallet data and transactions pagination
+    const walletBalance = wallet ? wallet.balance : 0;
+    const transactions = wallet ? wallet.transactions : [];
+
+    const sortedTransactions=transactions.sort((a,b)=>new Date(b.date)-new Date(a.date))
+
+    const transactionPage = parseInt(req.query.page) || 1;
+    const transactionLimit = 4;
+    const transactionSkip = (transactionPage - 1) * transactionLimit;
+
+    const totalTransactions = wallet ? wallet.transactions.length : 0;
+    const totalTransactionPages = Math.ceil(totalTransactions / transactionLimit);
+    const paginatedTransactions = sortedTransactions.slice(transactionSkip,transactionSkip+transactionLimit)
+
+    res.render('user/myAccount', {
+      users,
+      addresses: addressData,
+      orders: orderDetails,
+      walletBalance,
+      transactions: paginatedTransactions,
+      currentOrderPage: orderPage,
+      totalOrderPages,
+      currentPage: transactionPage,
+      totalPages: totalTransactionPages
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+
+
 
 const editUserProfile=async(req,res)=>{
 try{
@@ -337,27 +412,28 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const ShowOrderDetails = async(req,res)=>{
+const ShowOrderDetails = async (req, res) => {
   try {
-      const user_id = req.session.user_id
-      const productId = req.params.productId;
-      const orderId = req.params.orderId;
-      const userData = await User.findById(user_id)
-      const order = await orderModel.findOne({ _id : orderId , user : user_id })
-      .populate('address').populate({
-          path: 'products.productId',
-      });
-      console.log(order)
-      res.render("user/orderDetails",{
-          order,
-          products:productId,
-          user : userData
-      })
+    const user_id = req.session.user_id;
+    const orderId = req.params.orderId;
+    const userData = await User.findById(user_id);
+    const order = await orderModel.findOne({ _id: orderId, user: user_id })
+      .populate('address')
+      .populate({ path: 'products.productId' });
 
+    console.log('Fetched Order:', order); // Add this to debug
+
+    res.render("user/orderDetails", {
+      order,
+      user: userData,
+    });
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
   }
-}
+};
+
+
+
 
 
 

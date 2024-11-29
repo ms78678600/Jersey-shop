@@ -66,14 +66,23 @@
                             </article>
                         </div> <!-- col// -->
                     </div> <!-- row // -->
+
+                     <!-- Return Reason -->
+      <% if (order.status === 'Returned' && order.returnReason) { %>
+        <div class="alert alert-info">
+          <strong>Return Reason:</strong> <%= order.returnReason %>
+        </div>
+        <% } %>
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th width="50%">Product</th>
-                                            <th width="30%">Unit Price</th>
+                                            <th width="30%">Product</th>
+                                            <th width="30%">Price</th>
+                                            <th width="30%">size</th>
                                             <th width="30%">Quantity</th>
                                             <th width="30%" class="text-end">Total</th>
                                         </tr>
@@ -94,6 +103,7 @@
                                                     </a>
                                                 </td>
                                                 <td> ₹<%= product.price %> </td>
+                                                <td><%=product.size%></td>
                                                 <td> <%= product.quantity %> </td>
                                                 
                                                 <td class="text-end"> ₹<%= product.price * product.quantity %> </td>    
@@ -106,36 +116,46 @@
                                         <tr>
                                             <td colspan="4">
                                                 <article class="float-end">
+                                                  <dl class="dlist">
+                                                    <dt>Subtotal:</dt>
+                                                    <dd>₹<%= Subtotal %></dd>
+                                                  </dl>
+                                                  <dl class="dlist">
+                                                    <dt>Shipping cost:</dt>
+                                                    <dd>Free</dd>
+                                                  </dl>
+                                                  <dl class="dlist">
+                                                    <dt>Grand total:</dt>
+                                                    <dd> <b class="h5">₹<%= Subtotal %></b> </dd>
+                                                  </dl>
+                                                  <dl class="dlist">
+                                                    <dt class="text-muted">Status:</dt>
+                                                    <dd>
+                                                      <span class="badge badge-pill 
+                                                        <% if (order.status === 'Cancelled') { %>
+                                                            badge-soft-danger
+                                                        <% } else if (order.status === 'Pending') { %>
+                                                            badge-soft-warning
+                                                        <% } else { %>
+                                                            badge-soft-success
+                                                        <% } %>
+                                                      ">
+                                                        <%= order.status %>
+                                                      </span>
+                                                    </dd>
+                                                  </dl>
+                                              
+                                                  <% if (order.status === 'Cancelled') { %> <!-- Check if the order is cancelled -->
                                                     <dl class="dlist">
-                                                        <dt>Subtotal:</dt>
-                                                        <dd>₹<%= Subtotal %></dd>
+                                                      <dt class="text-muted">Cancellation Reason:</dt>
+                                                      <dd>
+                                                        <span><%= order.failureReason || "No reason provided" %></span> <!-- Display reason -->
+                                                      </dd>
                                                     </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Shipping cost:</dt>
-                                                        <dd>Free</dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Grand total:</dt>
-                                                        <dd> <b class="h5">₹<%= Subtotal %></b> </dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt class="text-muted">Status:</dt>
-                                                        <dd>
-                                                            <span class="badge badge-pill 
-                                                                <% if (order.status === 'Cancelled') { %>
-                                                                    badge-soft-danger
-                                                                <% } else if (order.status === 'Pending') { %>
-                                                                    badge-soft-warning
-                                                                <% } else { %>
-                                                                    badge-soft-success
-                                                                <% } %>
-                                                            ">
-                                                                <%= order.status %>
-                                                            </span>
-                                                        </dd>
-                                                    </dl>
+                                                  <% } %>
                                                 </article>
-                                            </td>
+                                              </td>
+                                              
                                             
                                         </tr>
                                         <% if (order.status !== 'Completed' && order.status !== 'Cancelled') { %>

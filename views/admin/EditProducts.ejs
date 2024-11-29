@@ -6,13 +6,7 @@
 <section class="content-main" style="margin-left: 20%;">
     <div class="row">
         <div class="col-lg-12">
-            <div class="content-header">
-                <h2 class="content-title">Edit Product</h2>
-                <div>
-                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                    <button class="btn btn-md rounded font-sm hover-up">Publish</button>
-                </div>
-            </div>
+           
         </div>
     </div>
     <h2 class="content-title text-center">Edit Product</h2>
@@ -108,6 +102,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>2.2 Size</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="mb-4">
+                                    <label class="form-label">Size</label>
+                                    <select name="size" id="product_size" class="form-control">
+                                        <option value="">Select Size</option>
+                                        <option value="XS" <%= product.size === 'XS' ? 'selected' : '' %>>XS</option>
+                                        <option value="S" <%= product.size === 'S' ? 'selected' : '' %>>S</option>
+                                        <option value="M" <%= product.size === 'M' ? 'selected' : '' %>>M</option>
+                                        <option value="L" <%= product.size === 'L' ? 'selected' : '' %>>L</option>
+                                        <option value="XL" <%= product.size === 'XL' ? 'selected' : '' %>>XL</option>
+                                        <option value="XXL" <%= product.size === 'XXL' ? 'selected' : '' %>>XXL</option>
+                                    </select>
+                                    <p class="text-danger" id="sizeError"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-md-3">
                                 <h6>5. Quantity</h6>

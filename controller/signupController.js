@@ -3,6 +3,7 @@ const otpgenerator = require('generate-otp');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const Product=require('../model/productModel')
 
 const signupController = {};
 
@@ -158,7 +159,11 @@ signupController.manageOtp = async (req, res) => {
     req.session.userActive = true;
     req.session.user_id = newUser._id;
 
-    return res.render('user/home')
+    // Assuming `products` is obtained from a database or defined elsewhere
+const products = await Product.find(); // Or however you retrieve the products
+
+res.render('user/home', { products });
+
   } catch (error) {
     console.error("Error occurred while verifying OTP:", error);
     return res.status(500).json({ status: 'error', message: 'An error occurred. Please try again' });

@@ -52,29 +52,12 @@ const loadCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const { productId, qty } = req.body;
-    console.log("Product ID:", productId);
-    console.log("Quantity:", qty);
-
-    if (!productId || !qty) {
-      return res.status(400).json({ message: "Product ID and quantity are required" });
-    }
-
     const user_id = req.session.user_id;
-    console.log('userid', user_id)
     const productData = await Product.findById(productId);
-
-    console.log("Product Data:", productData);
 
     if (!productData) {
       return res.status(404).json({ message: "Product not found" });
     }
-
-    const productPrice = productData.salesPrice;
-
-    console.log("Product Price:", productPrice);
-    // const category_id = productData.category._id;
-
-    // console.log("Category ID:", category_id);
 
     let cartData = await Cart.findOne({
       user_id: user_id || null,
@@ -82,10 +65,11 @@ const addToCart = async (req, res) => {
     });
 
     const totalCartQuantity = cartData ? cartData.quantity : 0;
-    console.log('totalcartquantity', totalCartQuantity)
     const totalQuantity = Number(totalCartQuantity) + Number(qty);
-    console.log('totalquantity', totalQuantity)
-    console.log('availble stock', productData.quantity)
+
+    if (totalQuantity > 10) {
+      return res.json({ success: false, message: "You cannot add more than 10 items." });
+    }
 
     if (productData.quantity < qty) {
       return res.json({
@@ -106,9 +90,9 @@ const addToCart = async (req, res) => {
       const cart = new Cart({
         product_id: productId,
         quantity: totalQuantity,
-        productPrice,
+        productPrice: productData.salesPrice,
         user_id,
-        // category_id,
+        size:productData.size
       });
       await cart.save();
     }
@@ -123,6 +107,7 @@ const addToCart = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 const removeFromCart = async (req, res) => {
@@ -166,6 +151,8 @@ const removeFromCart = async (req, res) => {
 
 const incrementCartItemQuantity = async (req, res) => {
   try {
+    console.log("workign");
+    
     const { productId } = req.body;
     const user_id = req.session.user_id;
 
@@ -176,6 +163,11 @@ const incrementCartItemQuantity = async (req, res) => {
       return res.json({ success: false, message: "Cart item not found" });
     }
 
+    // Check if the cart quantity has reached the limit
+    if (cartItem.quantity >= 10) {
+      return res.json({ success: false, message: "You cannot add more than 10 items." });
+    }
+
     // Find the product to check its stock
     const product = await Product.findById(productId);
 
@@ -183,14 +175,9 @@ const incrementCartItemQuantity = async (req, res) => {
       return res.json({ success: false, message: "Product not found" });
     }
 
-    // Check if there is enough stock to increment
+    // Check if there is enough stock to increment          
     if (product.quantity <= 0) {
       return res.json({ success: false, message: "Product is out of stock" });
-    }
-
-    // Check if the stock is sufficient for incrementing the cart item
-    if (product.quantity <= cartItem.quantity) {
-      return res.json({ success: false, message: "Cannot increment, not enough stock" });
     }
 
     // Proceed with updating the stock and cart item
@@ -212,6 +199,8 @@ const incrementCartItemQuantity = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
 
 
 

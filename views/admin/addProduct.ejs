@@ -95,11 +95,33 @@
                                         <div id="newImagesPreviewContainer" style="margin-top: 20px;"></div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>2.2 Size</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            <label class="form-label">Size</label>
+                                            <select name="size" id="product_size" class="form-control">
+                                                <option value="">Select Size</option>
+                                                <option value="XS">XS</option>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                                <option value="XXL">XXL</option>
+                                            </select>
+                                            <p class="text-danger" id="sizeError"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <h6>5. Quantity</h6>
                                 </div>
+                                
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">Quantity</label>
@@ -134,6 +156,7 @@
             document.getElementById("salePriceError").innerText = "";
             document.getElementById("categoryError").innerText = "";
             document.getElementById("imageError").innerText = "";
+            document.getElementById("sizeError").innerText = "";
             document.getElementById("stockError").innerText = "";
 
             // Validate Product Title
@@ -190,6 +213,13 @@
                 document.getElementById("stockError").innerText = "Valid quantity is required.";
                 isValid = false;
             }
+
+         // Validate Size
+    const size = document.getElementById("product_size").value;
+    if (size === "") {
+        document.getElementById("sizeError").innerText = "Please select a size.";
+        isValid = false;
+    }
 
             return isValid;
         }

@@ -68,7 +68,7 @@
                                         <span class="old-price">₹ <%= product.regularPrice %></span>
                                     </div>
                                     <div class="product-action-1 show">
-                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i
+                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="/productDetail/<%= product._id %>"><i
                                                 class="fi-rs-shopping-bag-add"></i></a>
                                     </div>
                                     <div class="product-info-extra">
@@ -81,7 +81,7 @@
                                             <%= product.quantity %>
                                         </p>
                                         <p><strong>Product Offer:</strong>
-                                            <%= product.productOffer %> 20%
+                                            <%= product.offerPercentage %>%
                                         </p>
                                     </div>
                                 </div>

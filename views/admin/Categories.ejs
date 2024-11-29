@@ -21,7 +21,7 @@
 
     </div>
     </header>
-    <section class="content-main">
+    <section>
       <div id="category-management" class="row">
         <div class="card mb-4 col-lg-12">
           <header class="card-header">
@@ -44,8 +44,8 @@
                   </tr>
                 </thead>
                 <tbody id="categoryTable">
-                  <% if (categories.length> 0) { %>
-                    <% categories.forEach(category=> { %>
+                  <% if (categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
                       <tr id="category-<%= category._id %>">
                         <td>
                           <%= category.name %>
@@ -61,7 +61,6 @@
                             data-bs-target="#editCategoryModal">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                           </a>
-
                         </td>
                         <td>
                           <a href="#" data-id="<%= category._id %>" class="delete-category">
@@ -69,20 +68,23 @@
                           </a>
                         </td>
                         <td>
-                          <% if (category.categoryOffer) { %>
+                          <% if (category.offerActive) { %>
                             <a href="#" data-id="<%= category._id %>" class="remove-offer-category">
-                              <i class="fa-solid fa-eraser" style="color: #088178;"></i> Remove offer
+                              <i class="fa-solid fa-eraser" style="color: #088178;"></i> Remove Offer
                             </a>
-                            <% } else { %>
-                              <a href="#" data-id="<%= category._id %>" class="apply-offer-category">
-                                <i class="fa-solid fa-tags"></i> Apply Offer
-                              </a>
-                              <% } %>
+                            <span class="text-success"><%= category.offerPercentage %>% Off</span>
+                          <% } else { %>
+                            <a href="#" data-id="<%= category._id %>" class="apply-offer-category">
+                              <i class="fa-solid fa-tags"></i> Apply Offer
+                            </a>
+                          <% } %>
+                          
                         </td>
                       </tr>
-                      <% }) %>
-                        <% } %>
+                    <% }) %>
+                  <% } %>
                 </tbody>
+                
               </table>
             </div>
           </div>
@@ -160,6 +162,16 @@
           </div>
         </div>
       </div>
+      <nav aria-label="Page navigation example" class="pagination justify-content-center mt-3">
+        <ul class="pagination">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+      
 
     </section>
 
@@ -269,57 +281,172 @@
         // Add event listener for modal dismissal
         document.getElementById('editCategoryModal').addEventListener('hidden.bs.modal', removeModalBackdrop);
       });
-    </script>
 
-
-
-    <script>
       document.addEventListener('DOMContentLoaded', function () {
-        let categoryIdToDelete = null;
+  document.querySelectorAll('.delete-category').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const categoryId = this.getAttribute('data-id');
+      const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+      confirmationModal.show();
 
-        // Open delete confirmation modal
-        document.querySelectorAll('.delete-category').forEach(function (button) {
-          button.addEventListener('click', function (event) {
-            event.preventDefault();
-            categoryIdToDelete = this.getAttribute('data-id');
-            var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-            confirmationModal.show();
-          });
-        });
-
-        // Confirm delete button click
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-          if (!categoryIdToDelete) return;
-
-          fetch(`/admin/categories/${categoryIdToDelete}`, {
+      // Confirm delete on modal
+      document.getElementById('confirmDeleteBtn').addEventListener('click', async function () {
+        try {
+          const response = await fetch(`/admin/categories/${categoryId}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
             }
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success) {
-                // Remove the deleted row from the table
-                document.getElementById(`category-${categoryIdToDelete}`).remove();
+          });
 
-                // Hide the modal
-                var confirmationModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
-                confirmationModal.hide();
-
-                // Show success message
-                Swal.fire('Success', 'Category deleted successfully', 'success');
-              } else {
-                Swal.fire('Error', data.message, 'error');
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
-            });
-        });
+          const data = await response.json();
+          if (data.success) {
+            // Close the modal
+            confirmationModal.hide();
+            // Remove category row from table
+            document.getElementById(`category-${categoryId}`).remove();
+            Swal.fire('Success', 'Category deleted successfully', 'success');
+          } else {
+            Swal.fire('Error', data.message, 'error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+        }
       });
+    });
+  });
+});
+
+
+
+
+
+    </script>
+
+
+
+    <script>
+    document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('remove-offer-category')) {
+    event.preventDefault();
+
+    const categoryId = event.target.getAttribute('data-id');
+    if (!categoryId) return;
+
+    fetch(`http://localhost:7000/admin/categories/${categoryId}/remove-offer`, { // Full URL
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Refresh the page to show updated offer status
+          setTimeout(()=>{
+            location.reload();
+          },2000)
+          
+          // Optionally, you can remove `location.reload()` and keep this DOM manipulation if you want dynamic updates without a full page refresh.
+          /*
+          // Update the DOM to reflect the offer removal
+          event.target.closest('.remove-offer-category').innerHTML = `
+            <a href="#" data-id="${categoryId}" class="apply-offer-category">
+              <i class="fa-solid fa-tags"></i> Apply Offer
+            </a>
+          `;
+
+          // Remove the offer percentage display
+          const offerDisplay = event.target.closest('.text-success');
+          if (offerDisplay) offerDisplay.remove();
+          */
+
+          // Show success message
+          Swal.fire('Success', 'Offer removed successfully', 'success');
+        } else {
+          Swal.fire('Error', data.message, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        Swal.fire('Error', 'An error occurred while removing the offer.', 'error');
+      });
+  }
+});
+
+
+
+      // applay offer
+
+      document.addEventListener('DOMContentLoaded', function () {
+  let selectedCategoryId = null;
+
+  // Show modal for applying offer
+  document.querySelectorAll('.apply-offer-category').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      selectedCategoryId = this.dataset.id;
+      const offerModal = new bootstrap.Modal(document.getElementById('offerModal'));
+      offerModal.show();
+    });
+  });
+
+  // Apply offer button inside modal
+  document.getElementById('applyOfferBtn').addEventListener('click', async function () {
+    const offerPercentage = Number(document.getElementById('offerInput').value);
+
+    // Validate offerPercentage
+    if (!offerPercentage || offerPercentage <= 0 || offerPercentage > 100) {
+      Swal.fire('Error', 'Please enter a valid offer percentage (0-100)', 'error');
+      return;
+    }
+
+    // Log the selected Category ID and Offer Percentage for debugging
+    console.log("Selected Category ID:", selectedCategoryId);
+    console.log("Offer Percentage:", offerPercentage);
+
+    // Send AJAX request to apply the offer
+    try {
+      const response = await fetch(`http://localhost:7000/admin/applyOffer/${selectedCategoryId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ offerPercentage }),
+      });
+
+      if (!response.ok) {
+        console.error('Response Error:', response.statusText);
+        Swal.fire('Error', 'Failed to apply offer: ' + response.statusText, 'error');
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Offer applied successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire('Error', 'Failed to apply offer: ' + data.message, 'error');
+      }
+    } catch (error) {
+      console.error('Error applying offer:', error);
+      Swal.fire('Error', 'An error occurred while applying the offer', 'error');
+    }
+  });
+});
+
+
     </script>
 
 

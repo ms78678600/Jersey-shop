@@ -17,19 +17,31 @@
         <label>Email Address <span class="required">*</span></label>
         <input required class="form-control square" name="email" type="email" title="Please enter a valid email address" value="<%= users.email %>">
         <span class="invalid-feedback">Please enter a valid email address.</span>
-      </div>
+      </div>    
       <div class="form-group col-md-12">
         <label>Mobile <span class="required"></span></label>
         <input required class="form-control square" name="mobile" type="text" pattern="\d{10}" title="Mobile number must be exactly 10 digits" value="<%= users.phonenumber %>">
         <span class="invalid-feedback">Mobile number must be exactly 10 digits.</span>
       </div>
-      <div class="col-md-12">
-        <button type="submit" class="btn btn-fill-out submit" name="submit">Save changes</button>
-      </div>
+      <div class="col-md-12 d-flex">
+        <!-- Edit Password Link (Left-aligned) -->
+        <a href="/password-settings" class="btn btn-fill-out submit">
+            <i class="fi-rs-settings mr-10"></i> Edit Password
+        </a>
+    
+        <!-- Save Changes Button with adjustable margin -->
+        <button type="submit" class="btn btn-fill-out submit ml-5" name="submit">
+            Save changes
+        </button>
     </div>
-  </form>
+    
+    
+    
+   
   
+  </form>     
 </div>
+
 <%- include('../layout/user/footer.ejs') %>
 
 <script>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
+const { type } = require('os');
 
 const cartSchema = new mongoose.Schema({
   product_id: {
@@ -21,6 +22,10 @@ const cartSchema = new mongoose.Schema({
   user_id: {
     type: ObjectId,
     required: true
+  },
+  size:{
+    type:String,
+    required:true
   },
   totalPrice: { // Corrected field name
     type: Number,

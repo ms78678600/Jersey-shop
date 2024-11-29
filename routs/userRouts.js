@@ -7,10 +7,12 @@ const userController = require('../controller/UsersController');
 const productController = require('../controller/productController');
 const CartController = require('../controller/cartController');
 const orderController= require('../controller/orderController')
+const couponController=require('../controller/couponController')
 const auth = require('../middleware/auth');
 const nocache = require('nocache');
 const passport = require('passport');
 const addressController = require('../controller/addressController');
+
 
 
 const userRoutes = express.Router();
@@ -114,6 +116,7 @@ userRoutes.get("/success-page",auth.isLogin,orderController.orderSuccessfull)
 // order
 userRoutes.get("/view-order/:orderId",auth.isLogin, userController.ShowOrderDetails);
 userRoutes.post('/cancel-order/:orderId', auth.isLogin, orderController.cancelOrder);
+userRoutes.post('/user/returnOrder/:orderId',auth.isLogin,orderController.returnOrder)
 
 userRoutes.put('/updateStatus/:orderId',auth.isLogin, orderController.updateOrderStatus);
 
@@ -129,9 +132,36 @@ userRoutes.post('/reset-password',auth.isLogin, userController.resetPassword);
 // Razorpay
 userRoutes.post("/checkout/razor-pay", auth.isLogin, orderController.razorPayPayment);
 userRoutes.post("/checkout/razor-pay/completed", auth.isLogin, orderController.razorpaySuccessfullOrder);
+userRoutes.post("/checkout/razor-pay/failed", auth.isLogin, orderController.razorPayFailedOrder);
+userRoutes.post("/api/retry-payment/:orderId",auth.isLogin,orderController.retryPayment);
+userRoutes.post("/api/payment-success/:orderId",auth.isLogin,orderController.paymentSuccessHandler)
+// userRoutes.post('/checkout/retry-payment', auth.isLogin, orderController.retryPayments);
+
+userRoutes.post("/checkout/wallet-payment",auth.isLogin, orderController.walletPayment);
 
 
+// Get Wishlist
+userRoutes.get('/wishlist', auth.isLogin, productController.getWishlist);
 
+userRoutes.post('/wishlist/add', auth.isLogin, productController.addToWishlist);
+
+// Add to Wishlist
+userRoutes.post('/wishlist/add', auth.isLogin, productController.addToWishlist);
+
+userRoutes.post('/wishlist/add-to-cart', auth.isLogin, productController.addToCartFromWishlist);
+
+
+// Remove from Wishlist
+userRoutes.post('/wishlist/remove', auth.isLogin, productController.removeFromWishlist);
+
+userRoutes.post('/apply-coupon', auth.isLogin, couponController.applyCoupon)
+
+// oreturnOrder
+userRoutes.post('/user/cancelOrder/:orderId',auth.isLogin, orderController.cancelOrder);
+// // Define route for returning a product within an order
+// userRoutes.post('/user/returnOrder/:orderId', auth.isLogin, orderController.returnProduct);
+userRoutes.get('/invoice', auth.isLogin, orderController.getInvoice);
+userRoutes.get('/saveinvoice', auth.isLogin, orderController.downloadInvoice);
 
 
 

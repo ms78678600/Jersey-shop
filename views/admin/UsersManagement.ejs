@@ -37,32 +37,45 @@
     <nav>
       <ul class="menu-aside">
         <li class="menu-item">
-          <a class="menu-link" href="/admin/adminDashboard"> <i class="icon material-icons md-home"></i>
-            <span class="text">Dashboard</span>
-          </a>
+            <a class="menu-link" href="/admin/adminDashboard"> <i class="icon material-icons md-home"></i>
+                <span class="text">Dashboard</span>
+            </a>
         </li>
-        <li class="menu-item has-submenu">
-          <a class="menu-link" href="/admin/product-management"> <i class="icon material-icons md-shopping_bag"></i>
-            <span class="text">Products</span>
-          </a>
-
-        </li>
-
-        <li class="menu-item has-submenu">
-          <a class="menu-link" href="/admin/add-product"> <i class="icon material-icons md-add_box"></i>
-            <span class="text">Add product</span>
-          </a>
-        </li>
-
-
         <li class="menu-item">
-          <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-stars"></i>
-            <span class="text">Add category</span>
-          </a>
+            <a class="menu-link" href="/admin/product-management"> <i class="icon material-icons md-shopping_bag"></i>
+                <span class="text">Products</span>
+            </a>
+           
         </li>
-
-
-    </nav>
+           
+        <li class="menu-item">
+            <a class="menu-link" href="/admin/users">
+                <i class="icon material-icons md-person"></i>
+                Users
+            </a>                  
+        </li>
+        <li class="menu-item">
+            <a class="menu-link" href="/admin/add-product"> <i class="icon material-icons md-add_box"></i>
+              <span class="text">Add product</span>
+            </a>
+          </li> 
+          <li class="menu-item">
+            <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-stars"></i>
+              <span class="text">Add category</span>
+            </a>
+          </li> 
+          <li class="menu-item ">
+            <a class="menu-link" href="/admin/orderManagement"> <i class="icon material-icons md-shopping_cart"></i>
+                <span class="text">Orders</span>
+            </a>
+        </li> 
+        <li class="menu-item ">
+            <a class="menu-link" href="/admin/coupons"> <i class="icon material-icons md-stars"></i>
+                <span class="text">Coupons</span> </a>
+        </li>
+                          
+    </ul>
+      </nav>
   </aside>
 
   <main class="main-wrap">
@@ -76,7 +89,7 @@
 
       </div>
     </header>
-    <section class="content-main">
+    <section >
       <div class="content-header">
         <h2 class="content-title">USER LIST</h2>
         <!-- <div>
@@ -86,7 +99,7 @@
       <div class="card mb-4">
         <header class="card-header">
           <div class="row gx-3">
-            <div class="col-lg-4 col-md-6 me-auto">
+            <!-- <div class="col-lg-4 col-md-6 me-auto">
               <input type="text" placeholder="Search..." class="form-control">
             </div>
             <div class="col-lg-2 col-md-3 col-6">
@@ -103,7 +116,7 @@
                 <option>Show 30</option>
                 <option>Show 40</option>
               </select>
-            </div>
+            </div> -->
           </div>
         </header> <!-- card-header end// -->
         <div class="card-body">
@@ -120,40 +133,39 @@
               </thead>
 
               <tbody>
-                <% users.forEach((user)=> { %>
-                  <tr>
-                    <td width="40%">
-                      <%= user.name %>
+                <% users.forEach((user) => { %>
+                  <% if (!user.isAdmin) { %> <!-- Only display users who are not admins -->
+                    <tr>
+                      <td width="40%">
+                        <%= user.name %>
                         <a href="#" class="itemside">
-                          <!-- <div class="left">
-                            <img src="assets/imgs/people/avatar1.jpg" class="img-sm img-avatar" alt="Userpic">
-                          </div> -->
                           <div class="info pl-3">
                             <!-- Additional user info can go here -->
                           </div>
                         </a>
-                    </td>
-                    <td>
-                      <%= user.email %>
-                    </td> <!-- Display user email -->
-                    <td>
-                      <p
-                        class="<%= user.isBlocked ? 'badge badge-pill badge-soft-success' : 'badge badge-pill badge-soft-danger' %>">
-                        <%= user.isBlocked ? 'Yes' : 'No' %>
-                      </p>
-                    </td>
-                    <td>
-                      <%= user.phonenumber %>
-                    </td>
-                    <td class="text-end">
-                      <a href="#" class="toggle-block-unblock" data-user-id="<%= user._id %>"
-                        data-is-active="<%= user.isBlocked %>">
-                        <%= user.isBlocked ? 'Unblock' : 'Block' %>
-                      </a>
-                    </td>
-                  </tr>
-                  <% }); %>
+                      </td>
+                      <td>
+                        <%= user.email %>
+                      </td>
+                      <td>
+                        <p class="<%= user.isBlocked ? 'badge badge-pill badge-soft-success' : 'badge badge-pill badge-soft-danger' %>">
+                          <%= user.isBlocked ? 'Yes' : 'No' %>
+                        </p>
+                      </td>
+                      <td>
+                        <%= user.phonenumber %>
+                      </td>
+                      <td style="text-align: center;">
+                        <a href="#" class="toggle-block-unblock" data-user-id="<%= user._id %>" data-is-active="<%= user.isBlocked %>">
+                          <%= user.isBlocked ? 'Unblock' : 'Block' %>
+                        </a>
+                      </td>
+                      
+                    </tr>
+                  <% } %> <!-- End if check -->
+                <% }); %>
               </tbody>
+              
             </table>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -198,17 +210,17 @@
         </div> <!-- card-body end// -->
       </div> <!-- card end// -->
       <div class="pagination-area mt-15 mb-50">
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation">
           <ul class="pagination justify-content-start">
-            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-            <li class="page-item"><a class="page-link" href="#">02</a></li>
-            <li class="page-item"><a class="page-link" href="#">03</a></li>
-            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">16</a></li>
-            <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
           </ul>
         </nav>
       </div>
+      
     </section> <!-- content-main end// -->
     <footer class="main-footer font-xs">
       <div class="row pb-30 pt-15">
@@ -221,7 +233,7 @@
         </div>
         <div class="col-sm-6">
           <div class="text-sm-end">
-            All rights reserved
+           
           </div>
         </div>
       </div>

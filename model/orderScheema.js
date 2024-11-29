@@ -2,12 +2,24 @@ const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 const moment = require("moment");
 
-// creating order schema
+// Function to generate random order number
+const generateOrderNumber = () => {
+  const prefix = "ORD"; // You can change this prefix
+  const randomNum = Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+  return `${prefix}-${randomNum}`;
+};
+
+// Creating order schema
 const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  orderNumber: {
+    type: String,
+    default: generateOrderNumber,
+    unique: true,
   },
   address: {
     city: {
@@ -38,19 +50,38 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      size: {
+        type: String,
+        enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+        required: true},
+      returnStatus: {
+        type: String,
+        enum: ['Not Returned', 'Returned'],
+        default: 'Not Returned',
+      },
+      returnReason: {
+        type: String,
+        default: "",
+      },
     },
   ],
-  status: {
-    type: String,
-    default: 'Pending'  
-  },
-  payment: {
-    type: String,
-    required: true,
-  },
   totalPrice: {
     type: Number,
     required: true,
+  },
+  status: {
+    type: String,
+    enum: ['Pending','Failed', 'Returned','Processing', 'Shipped', 'Completed', 'Cancelled'],
+    default: 'Pending',
+  },
+  failureReason: {
+    type: String,
+    default: "",
+},
+  payment: {
+    type: String,
+    enum: [ 'Razorpay', 'Cash on Delivery', 'Wallet'],
+    default: 'Credit Card',
   },
   date: {
     type: String,
@@ -61,5 +92,6 @@ const orderSchema = new mongoose.Schema({
     default: new Date(),
   },
 });
+
 
 module.exports = mongoose.model("Orders", orderSchema);

@@ -38,10 +38,19 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
-  // size: {
-  //   type: String,
-  //   required: true
-  // },
+  offerPercentage: {
+    type: Number,
+    default: 0
+  },
+  offerPrice: {
+    type: Number,
+
+  },
+  size: {
+    type: String,
+    enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    required: true
+  },
   createdOn: {
     type: Date,
     required: true,
@@ -70,10 +79,15 @@ const productSchema = new Schema({
   ]
 });
 
-productSchema.pre('validate', function(next) {
-  console.log("Validating product:", this);
-  next();
-});
+// productSchema.pre('validate', function (next) {
+//   // Calculate offerPrice if offerPercentage is provided
+//   if (this.offerPercentage > 0) {
+//     this.offerPrice = this.salesPrice - (this.salesPrice * this.offerPercentage / 100);
+//   } else {
+//     this.offerPrice = this.salesPrice;
+//   }
+//   next();
+// });
 
 module.exports = mongoose.model("Product", productSchema);
 
