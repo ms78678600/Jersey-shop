@@ -269,7 +269,7 @@ const showProductManagement = async (req, res) => {
     const totalPages = Math.ceil(totalProducts / limit);  // Calculate total number of pages
 
     // Render the page with products and pagination data
-    res.render('admin/productManagement', {
+    res.render('admin/ProductManagement', {
       products,
       currentPage: page,
       totalPages,

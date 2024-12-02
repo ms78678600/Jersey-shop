@@ -18,6 +18,10 @@ const RazorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
+console.log(process.env.PORT);  // Should log: 7000
+console.log(process.env.MONGODB_URI);  // Should log: mongodb://localhost:27017/Ecommerce
+console.log(process.env.RAZORPAY_KEY_ID);  // Should log: rzp_test_wSI5EPnj247nka
+console.log(process.env.RAZORPAY_KEY_SECRET);  // Should log: rzp_test_wSI5EPnj247nka
 
 const loadeCheckout = async (req, res) => {
   try {
