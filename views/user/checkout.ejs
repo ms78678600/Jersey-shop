@@ -238,7 +238,7 @@
                                                                         <span class="product-qty">x <%=
                                                                                 cartItem.quantity %></span>
                                                                     </td>
-                                                                    <td>$<%= (product.salesPrice *
+                                                                    <td>₹<%= (product.salesPrice *
                                                                             cartItem.quantity).toFixed(2) %>
                                                                     </td>
                                                                 </tr>
@@ -250,7 +250,7 @@
                                                                             <th>SubTotal</th>
                                                                             <td colspan="3" id="total"
                                                                                 class="font-lg fw-900 text-brand product-subtotal">
-                                                                                $<%= cartTotal.toFixed(2) %>
+                                                                                ₹<%= cartTotal.toFixed(2) %>
                                                                             </td>
                                                                         </tr>
 
@@ -259,7 +259,7 @@
                                                                             <th>Coupon Discount</th>
                                                                             <td colspan="3">
                                                                                 <em id="couponDiscount"
-                                                                                    class="font-lg fw-900 text-brand">$0.00</em>
+                                                                                    class="font-lg fw-900 text-brand">₹0.00</em>
                                                                             </td>
                                                                         </tr>
 
@@ -268,7 +268,7 @@
                                                                             <th>Total</th>
                                                                             <td colspan="3" class="product-subtotal">
                                                                                 <span id="checkoutTotal"
-                                                                                    class="font-xl text-brand fw-900">$
+                                                                                    class="font-xl text-brand fw-900">₹
                                                                                     <%= cartTotal.toFixed(2) %></span>
                                                                             </td>
                                                                         </tr>

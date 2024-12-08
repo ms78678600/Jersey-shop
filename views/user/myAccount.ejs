@@ -112,11 +112,11 @@
                                                                         </td>
                                                                         <td>
                                                                             <% if (order.totalPrice) { %>
-                                                                                ₹<%= order.totalPrice.toFixed(2) %> for
-                                                                                    <%= order.products.length %> item(s)
-                                                                                        <% } else { %>
-                                                                                            N/A
-                                                                                            <% } %>
+                                                                                ₹<%= order.totalPrice.toFixed(2) %>
+
+                                                                                    <% } else { %>
+                                                                                        N/A
+                                                                                        <% } %>
                                                                         </td>
                                                                         <td>
                                                                             <a href="/view-order/<%= order._id %>"
@@ -133,18 +133,22 @@
                                                         </tbody>
                                                     </table>
                                                     <!-- Pagination Controls -->
-<nav aria-label="Order pagination">
-    <ul class="pagination justify-content-center">
-        <% for (let i = 1; i <= totalOrderPages; i++) { %>
-            <li class="page-item <%= i === currentOrderPage ? 'active' : '' %>">
-                <!-- Add #orders to keep the Orders tab open -->
-                <a class="page-link" href="?orderPage=<%= i %>#orders"><%= i %></a>
-            </li>
-        <% } %>
-    </ul>
-</nav>
+                                                    <nav aria-label="Order pagination">
+                                                        <ul class="pagination justify-content-center">
+                                                            <% for (let i=1; i <=totalOrderPages; i++) { %>
+                                                                <li
+                                                                    class="page-item <%= i === currentOrderPage ? 'active' : '' %>">
+                                                                    <!-- Add #orders to keep the Orders tab open -->
+                                                                    <a class="page-link"
+                                                                        href="?orderPage=<%= i %>#orders">
+                                                                        <%= i %>
+                                                                    </a>
+                                                                </li>
+                                                                <% } %>
+                                                        </ul>
+                                                    </nav>
 
-                                                      
+
                                                 </div>
                                             </div>
 
@@ -319,34 +323,39 @@
                                             </tbody>
                                         </table>
 
-                                       <!-- Pagination Controls -->
-<nav aria-label="Transaction history pagination">
-    <ul class="pagination justify-content-center">
-        <% if (currentPage > 1) { %>
-            <li class="page-item">
-                <a class="page-link" href="?page=<%= currentPage - 1 %>&activeTab=wallet">
-                    <i class="material-icons md-chevron_left"></i>
-                </a>
-            </li>
-        <% } %>
+                                        <!-- Pagination Controls -->
+                                        <nav aria-label="Transaction history pagination">
+                                            <ul class="pagination justify-content-center">
+                                                <% if (currentPage> 1) { %>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                            href="?page=<%= currentPage - 1 %>&activeTab=wallet">
+                                                            <i class="material-icons md-chevron_left"></i>
+                                                        </a>
+                                                    </li>
+                                                    <% } %>
 
-        <% for (let i = 1; i <= totalPages; i++) { %>
-            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                <a class="page-link" href="?page=<%= i %>&activeTab=wallet">
-                    <%= i.toString().padStart(2, '0') %>
-                </a>
-            </li>
-        <% } %>
+                                                        <% for (let i=1; i <=totalPages; i++) { %>
+                                                            <li
+                                                                class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                                <a class="page-link"
+                                                                    href="?page=<%= i %>&activeTab=wallet">
+                                                                    <%= i.toString().padStart(2, '0' ) %>
+                                                                </a>
+                                                            </li>
+                                                            <% } %>
 
-        <% if (currentPage < totalPages) { %>
-            <li class="page-item">
-                <a class="page-link" href="?page=<%= currentPage + 1 %>&activeTab=wallet">
-                    <i class="material-icons md-chevron_right"></i>
-                </a>
-            </li>
-        <% } %>
-    </ul>
-</nav>
+                                                                <% if (currentPage < totalPages) { %>
+                                                                    <li class="page-item">
+                                                                        <a class="page-link"
+                                                                            href="?page=<%= currentPage + 1 %>&activeTab=wallet">
+                                                                            <i
+                                                                                class="material-icons md-chevron_right"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <% } %>
+                                            </ul>
+                                        </nav>
 
                                     </div>
 
@@ -523,51 +532,51 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get the activeTab parameter from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeTab = urlParams.get('activeTab');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the activeTab parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('activeTab');
 
-        // If there's an activeTab, set the corresponding tab as active
-        if (activeTab) {
-            const tabs = document.querySelectorAll('.nav-link');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-                const tabContentId = tab.getAttribute('href').substring(1); // Get the href without the '#' character
-                const tabContent = document.getElementById(tabContentId);
+            // If there's an activeTab, set the corresponding tab as active
+            if (activeTab) {
+                const tabs = document.querySelectorAll('.nav-link');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    const tabContentId = tab.getAttribute('href').substring(1); // Get the href without the '#' character
+                    const tabContent = document.getElementById(tabContentId);
 
-                if (tabContentId === activeTab) {
-                    tab.classList.add('active');
-                    tabContent.classList.add('show', 'active'); // Show the corresponding tab content
-                } else {
-                    tabContent.classList.remove('show', 'active'); // Hide other tab contents
-                }
-            });
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Check if there's a hash in the URL (e.g., #orders or #wallet)
-        const activeTab = window.location.hash;
-        if (activeTab) {
-            // Remove 'active' class from any tab and section that's currently active
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
-    
-            // Activate the tab and section based on the hash
-            const tabLink = document.querySelector(`.nav-link[href="${activeTab}"]`);
-            const tabPane = document.querySelector(activeTab);
-            if (tabLink && tabPane) {
-                tabLink.classList.add('active');
-                tabPane.classList.add('show', 'active');
+                    if (tabContentId === activeTab) {
+                        tab.classList.add('active');
+                        tabContent.classList.add('show', 'active'); // Show the corresponding tab content
+                    } else {
+                        tabContent.classList.remove('show', 'active'); // Hide other tab contents
+                    }
+                });
             }
-        }
-    });
+        });
     </script>
-    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if there's a hash in the URL (e.g., #orders or #wallet)
+            const activeTab = window.location.hash;
+            if (activeTab) {
+                // Remove 'active' class from any tab and section that's currently active
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+                // Activate the tab and section based on the hash
+                const tabLink = document.querySelector(`.nav-link[href="${activeTab}"]`);
+                const tabPane = document.querySelector(activeTab);
+                if (tabLink && tabPane) {
+                    tabLink.classList.add('active');
+                    tabPane.classList.add('show', 'active');
+                }
+            }
+        });
+    </script>
+
 
 
     <%- include('../layout/user/footer.ejs') %>

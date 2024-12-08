@@ -224,7 +224,12 @@
     const endDate = document.getElementById("customEndDate").value;
 
     if (reportType === 'custom' && (!startDate || !endDate)) {
-      alert("Please select both start and end dates.");
+      Swal.fire({
+                        title: 'Error!',
+                        text: 'No Order this Date',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
       return;
     }
 

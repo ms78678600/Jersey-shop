@@ -56,7 +56,7 @@
                                     <h2 class="animated fw-900">Big Deals From</h2>
                                     <h1 class="animated fw-900 text-8">Manufacturer</h1>
                                     <p class="animated">football jersy,  training suit, vintage jerseys...</p>
-                                    <a class="animated btn btn-brush btn-brush-1" href="shop-product-right.html"> Shop Now </a>
+                                    <a class="animated btn btn-brush btn-brush-1"  href="/shop"> Shop Now </a>
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-6">
@@ -86,11 +86,7 @@
                                             <% } %>
                                         </a>
                                     </div>
-                                    <div class="product-action-1">
-                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                    </div>
+                                    
                                     <div class="product-badges product-badges-position product-badges-mrg">
                                         <span class="hot">Hot</span>
                                     </div>
@@ -106,9 +102,7 @@
                                         <span>₹ <%= product.salesPrice %> </span>
                                         <span class="old-price">₹ <%= product.regularPrice %></span>
                                     </div>
-                                    <div class="product-action-1 show">
-                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
-                                    </div>
+                                    
                                     <div class="product-info-extra">
                                         <p><strong>Category:</strong> <%= product?.category?.name %></p>
                                         <p><strong>Stock:</strong> <%= product.quantity %></p>

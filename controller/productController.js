@@ -154,7 +154,11 @@ const loadProductDetail = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { productName, description, marketPrice, salePrice, myCategory, quantity ,size} = req.body;
+    console.log(req.body);
+    
+    const { productName, description, marketPrice, salePrice, category, quantity ,size} = req.body;
+    console.log(category);
+    
 
     console.log("Received form data for edit:", req.body); // Debug log
 
@@ -189,9 +193,10 @@ const updateProduct = async (req, res) => {
     product.description = description;
     product.regularPrice = marketPrice;
     product.salesPrice = salePrice;
-    product.category = myCategory;
+    product.category = category;
     product.quantity = quantity;
     product.size=size
+
 
     // Update images only if new ones are uploaded
     if (updatedImages.length > 0) {
@@ -320,7 +325,7 @@ const applyOffer = async (req, res) => {
 
     // Calculate the new sales price based on the offer percentage
     const discount = (product.salesPrice * offerPercentage) / 100;
-    const newSalesPrice = product.salesPrice - discount;
+    const newSalesPrice = product.salesPrice - Math.floor(discount);
     console.log(discount,"offer apply");
     
     

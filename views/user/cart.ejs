@@ -50,7 +50,7 @@
                                                     </p>
                                                 </td>
                                                 <td class="price" data-title="Price">
-                                                    <span>$<%= product.salesPrice %></span>
+                                                    <span>₹<%= product.salesPrice %></span>
                                                 </td>
                                                 <td class="text-center" data-title="Quantity">
                                                     <div class="detail-qty border radius m-auto"
@@ -74,7 +74,7 @@
                                                     <%= cartItem.size%>
                                                 </td>
 
-                                                <td class="price subtotal"><span>$<%= (product.salesPrice *
+                                                <td class="price subtotal"><span>₹<%= (product.salesPrice *
                                                             cartItem.quantity).toFixed(2) %></span></td>
                                                 <td class="action" data-title="Remove">
                                                     <form class="delete-cart-form" data-cart-id="<%= cartItem._id %>">
@@ -112,21 +112,21 @@
                                                                 <tr>
                                                                     <td class="cart_total_label">Cart Subtotal</td>
                                                                     <td class="cart_total_amount">
-                                                                        <span class="font-lg fw-900 text-brand">$<%=
+                                                                        <span class="font-lg fw-900 text-brand">₹<%=
                                                                                 cartTotal %></span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="cart_total_label">Shipping</td>
                                                                     <td class="cart_total_amount">
-                                                                        <span class="font-lg fw-900 text-brand">0</span>
+                                                                        <span class="font-lg fw-900 text-brand">Free</span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="cart_total_label">Total</td>
                                                                     <td class="cart_total_amount">
                                                                         <strong><span
-                                                                                class="font-xl fw-900 text-brand">$<%=
+                                                                                class="font-xl fw-900 text-brand">₹<%=
                                                                                     cartTotal.toFixed(2) %>
                                                                             </span></strong>
                                                                     </td>
@@ -272,9 +272,9 @@
                             const newQuantity = data.newQuantity;
 
 
-                            const price = parseFloat(priceSpan.textContent.replace('$', ''));
+                            const price = parseFloat(priceSpan.textContent.replace('₹', ''));
                             const newSubtotal = price * newQuantity;
-                            subtotalSpan.textContent = `$${newSubtotal.toFixed(2)}`;
+                            subtotalSpan.textContent = `₹${newSubtotal.toFixed(2)}`;
 
                             // Update the total cart amount
                             updateCartTotal();
@@ -296,12 +296,12 @@
             function updateCartTotal() {
                 let total = 0;
                 document.querySelectorAll('.subtotal span').forEach((subtotalSpan) => {
-                    const subtotal = parseFloat(subtotalSpan.textContent.replace('$', ''));
+                    const subtotal = parseFloat(subtotalSpan.textContent.replace('₹', ''));
                     total += subtotal;
                 });
 
-                document.querySelector('.cart_total_amount .font-lg').textContent = `$${total.toFixed(2)}`;
-                document.querySelector('.cart_total_amount .font-xl').textContent = `$${(total * 1.05).toFixed(2)}`;
+                document.querySelector('.cart_total_amount .font-lg').textContent = `₹${total.toFixed(2)}`;
+                document.querySelector('.cart_total_amount .font-xl').textContent = `₹${(total ).toFixed(2)}`;
             }
 
         </script>
