@@ -25,8 +25,9 @@
                     </div>
 
                 </section>
+                
                 <% products.forEach(product=> { %>
-                    <% if (product.is_active===true) { %>
+                    <%console.log(product)%>
                         <div class="col">
                             <div class="product-cart-wrap mb-30">
                                 <div class="product-img-action-wrap">
@@ -87,7 +88,6 @@
                                 </div>
                             </div>
                         </div>
-                        <% } %>
                             <% }) %>
             </div>
         </div>

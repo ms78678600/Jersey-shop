@@ -392,7 +392,7 @@ const removeOffer = async (req, res) => {
 const showShopProduct = async (req, res) => {
   try {
     const { page = 0, sort } = req.query;
-    const limit = 5; 
+    const limit = 4; 
     const currentPage = parseInt(page);
     const skip = currentPage * limit;
 
@@ -408,11 +408,11 @@ const showShopProduct = async (req, res) => {
     }
 
     // Get the total number of products for pagination
-    const totalProducts = await productModel.countDocuments({ quantity: { $gt: 0 } });
+    const totalProducts = await productModel.countDocuments({is_active:true, quantity: { $gt: 0 } });
     const totalPages = Math.ceil(totalProducts / limit);
 
     // Fetch products with pagination, sorting, and filtering
-    const products = await productModel.find({ quantity: { $gt: 0 } })
+    const products = await productModel.find({is_active:true, quantity: { $gt: 0 } })
       .populate('category')
       .sort(sortCriteria)
       .skip(skip)
@@ -422,6 +422,7 @@ const showShopProduct = async (req, res) => {
     const categories = await categoryModel.find();
 
     // Render the shop page with the fetched data
+    
     res.render('user/shope', {
       products,
       currentPage,
