@@ -392,7 +392,7 @@ const removeOffer = async (req, res) => {
 const showShopProduct = async (req, res) => {
   try {
     const { page = 0, sort } = req.query;
-    const limit = 4; 
+    const limit = 5; 
     const currentPage = parseInt(page);
     const skip = currentPage * limit;
 
