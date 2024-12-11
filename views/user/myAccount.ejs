@@ -304,8 +304,9 @@
                                                     <% transactions.forEach(transaction=> { %>
                                                         <tr>
                                                             <td>
-                                                                <%= new Date(transaction.date).toLocaleDateString() %>
+                                                                <%= new Date(transaction.date).toLocaleDateString('en-GB') %>
                                                             </td>
+                                                            
                                                             <td>
                                                                 <%= transaction.transactionType==='credit' ? 'Credit'
                                                                     : 'Debit' %>
