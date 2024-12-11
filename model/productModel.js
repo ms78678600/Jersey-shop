@@ -53,7 +53,6 @@ const productSchema = new Schema({
   },
   createdOn: {
     type: Date,
-    required: true,
     default: Date.now
   },
   // stock: {

@@ -123,7 +123,7 @@
                                             </td>
                                             <td>₹ <%= product.salesPrice %></td>
                                             <td>Available stock <b><%= product.quantity %></b></td>
-                                            <td>02.11.2021</td>
+                                            <td><%= new Date(product.createdOn).toLocaleDateString('en-GB') %></td>
                                             <td>₹ <%= product.offerPrice ? product.offerPrice : product.salesPrice %>
                                                 <% if (product.offerPercentage > 0) { %>
                                                     <small class="text-muted">(Offer: <%= product.offerPercentage %>%)</small>

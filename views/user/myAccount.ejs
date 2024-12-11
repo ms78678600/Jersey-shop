@@ -101,8 +101,8 @@
                                                                         <td>
                                                                             <% if (order.createdOn) { %>
                                                                                 <%= new
-                                                                                    Date(order.createdOn).toLocaleDateString()
-                                                                                    %>
+                                                                                    Date(order.createdOn).toLocaleDateString('en-GB') %>
+                                                                                
                                                                                     <% } else { %>
                                                                                         N/A
                                                                                         <% } %>
